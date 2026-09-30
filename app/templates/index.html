@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitBuddy - AI Workout Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>💪 FitBuddy - AI Workout Generator</h1>
+
+    {% if error %}
+    <div class="alert alert-error" role="alert">⚠️ {{ error }}</div>
+    {% endif %}
+
+    <form action="/generate" method="post" id="plan-form">
+      <label for="username">Name:</label>
+      <input type="text" id="username" name="username" maxlength="100" required
+             value="{{ form.get('username', '') }}">
+
+      <label for="user_id">User ID:</label>
+      <input type="number" id="user_id" name="user_id" min="1" step="1" required
+             value="{{ form.get('user_id', '') }}">
+
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" min="10" max="100" step="1" required
+             value="{{ form.get('age', '') }}">
+
+      <label for="weight">Weight (kg):</label>
+      <input type="number" id="weight" name="weight" min="1" max="500" step="0.1" required
+             value="{{ form.get('weight', '') }}">
+
+      <label for="goal">Fitness Goal:</label>
+      <input type="text" id="goal" name="goal" maxlength="200" required
+             placeholder="e.g., weight loss, flexibility"
+             value="{{ form.get('goal', '') }}">
+
+      {% set current = form.get('intensity', 'Low') %}
+      <label for="intensity">Workout Intensity:</label>
+      <select id="intensity" name="intensity">
+        <option value="Low"    {{ 'selected' if current == 'Low' }}>Low</option>
+        <option value="Medium" {{ 'selected' if current == 'Medium' }}>Medium</option>
+        <option value="High"   {{ 'selected' if current == 'High' }}>High</option>
+      </select>
+
+      <button type="submit" id="submit-btn">Generate Plan</button>
+    </form>
+
+    <p class="footer-links"><a href="/view-all-users">View all users &amp; plans</a></p>
+  </div>
+
+  <script>
+    var btn = document.getElementById('submit-btn');
+    document.getElementById('plan-form').addEventListener('submit', function () {
+      btn.disabled = true;
+      btn.textContent = 'Generating your plan… this can take up to a minute';
+    });
+    window.addEventListener('pageshow', function (e) {   // back button restores the page from cache
+      if (e.persisted) { btn.disabled = false; btn.textContent = 'Generate Plan'; }
+    });
+  </script>
+</body>
+</html>

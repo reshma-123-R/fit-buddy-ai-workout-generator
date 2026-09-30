@@ -1,0 +1,15 @@
+# --- Web app ---
+fastapi>=0.115
+uvicorn[standard]>=0.30
+jinja2>=3.1
+python-multipart>=0.0.9      # needed for HTML form posts
+sqlalchemy>=2.0
+pydantic>=2.5
+python-dotenv>=1.0
+
+# --- AI: current Google Gen AI SDK (replaces the old, deprecated `google-generativeai`) ---
+google-genai>=1.0
+
+# --- Testing ---
+pytest>=8.0
+httpx>=0.27                  # used by FastAPI's TestClient
